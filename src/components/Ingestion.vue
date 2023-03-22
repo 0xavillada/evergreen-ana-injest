@@ -1,6 +1,16 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+
+    <b-alert class="alert-btn" v-model="showSuccess" variant="success" dismissible>
+      File formated and saved!
+    </b-alert>
+
+    <b-alert class="alert-btn" v-model="showError" variant="danger" dismissible>
+      Error, try again!
+    </b-alert>
+
+
     <b-overlay :show="loading" rounded="sm">
       <div class="mt-4 d-flex w-100 justify-content-center">
         <div class="input-label">
@@ -11,7 +21,7 @@
         </div>
       </div>
       <div>
-        <b-button @click="formatFile(fileURL)" class="mt-4" variant="outline-primary">Format and Analyze</b-button>
+        <b-button :disabled="fileURL.length < 3" @click="formatFile(fileURL)" class="mt-4" variant="outline-primary">Format and Analyze</b-button>
       </div>
   </b-overlay>
   </div>
@@ -29,14 +39,19 @@ export default {
     return {
       fileURL: "",
       externalServiceURL: "https://v2.convertapi.com/convert/xlsx/to/csv?Secret=6mSJbYN6n0hm4GTj&StoreFile=true",
-      loading: false
+      apiServiceURL: "http://localhost:5000",
+      loading: false,
+      showSuccess: false,
+      showError: false
     }
   },
   methods: {
     async formatFile(file) {
       this.loading = true;
+      let fileName = file.split("/");
+      fileName = fileName[fileName.length - 1];
       try {
-        let response = await axios.post(
+        let externalResponse = await axios.post(
           this.externalServiceURL,
           {
             File: file
@@ -47,14 +62,27 @@ export default {
             },
           }
         );
-        console.log(response)
-        this.loading = false;
-        return response.data;
+        await axios.post(
+          this.apiServiceURL + '/api/ingesta_archivos_xlsx',
+          {
+            fileData: {
+              OriginalFile: fileName,
+              Status: "Loaded",
+              ...externalResponse.data.Files[0]
+            }
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }
+        );
+        this.showSuccess = true;
       } catch (err) {
-        //
-        this.loading = false;
-        return err.response;
+        this.showError = true;
       }
+      this.loading = false;
+      this.fileURL = "";
     }
   }
 }
@@ -62,6 +90,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.alert-btn ::v-deep .close {
+  background-color: transparent;
+  border: none;
+  margin: 0 10px 0 10px;
+}
+
 .input-label {
   
   margin: auto 20px auto 20px;
