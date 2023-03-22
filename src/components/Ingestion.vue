@@ -1,16 +1,12 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-
     <b-alert class="alert-btn" v-model="showSuccess" variant="success" dismissible>
       File formated and saved!
     </b-alert>
-
     <b-alert class="alert-btn" v-model="showError" variant="danger" dismissible>
       Error, try again!
     </b-alert>
-
-
     <b-overlay :show="loading" rounded="sm">
       <div class="mt-4 d-flex w-100 justify-content-center">
         <div class="input-label">
@@ -95,12 +91,10 @@ export default {
   border: none;
   margin: 0 10px 0 10px;
 }
-
 .input-label {
   
   margin: auto 20px auto 20px;
 }
-
 h3 {
   margin: 40px 0 0;
 }
