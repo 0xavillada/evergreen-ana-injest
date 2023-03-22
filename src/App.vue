@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Analytics logo" src="https://www.irisidea.com/wp-content/uploads/2017/11/datapump_3.png">
+    <Ingestion msg="Analytics data ingestion"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Ingestion from './components/Ingestion.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Ingestion
   }
 }
 </script>
@@ -23,6 +23,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 </style>
