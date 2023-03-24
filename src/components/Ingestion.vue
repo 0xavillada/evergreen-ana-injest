@@ -35,7 +35,7 @@ export default {
     return {
       fileURL: "",
       externalServiceURL: "https://v2.convertapi.com/convert/xlsx/to/csv?Secret=6mSJbYN6n0hm4GTj&StoreFile=true",
-      apiServiceURL: "http://localhost:5000",
+      apiServiceURL: "http://40.118.66.81",
       loading: false,
       showSuccess: false,
       showError: false
